@@ -17,17 +17,12 @@ public class Main {
                 new Ship(2, "Destroyer")
         };
 
-//        for(int i = 0; i < playerOneShips.length; i++) {
-//            placeShipPrompt(playerOneShips[i]);
-//            String startCoordinate = scanner.next();
-//            String endCoordinate = scanner.next();
-//        }
-        String coordinate = scanner.next();
-        boolean isValid = isValidCoordinate(coordinate);
-        if (isValid) {
-            System.out.println("true");
+        for(int i = 0; i < playerOneShips.length; i++) {
+            placeShipPrompt(playerOneShips[i]);
+            String startCoordinate = scanner.next();
+            String endCoordinate = scanner.next();
         }
-        else System.out.println("false");
+
     }
     
     public static void placeShipPrompt(Ship ship) {
@@ -84,8 +79,37 @@ public class Main {
             return false;
         }
 
-
         return true;
+    }
+
+    public static int calculateLength(int[] start, int[] end) {
+        if (start[0] == end[0]) {
+            int calcul = Math.abs(start[1] - end[1]);
+            return calcul + 1;
+        }
+        if (start[1] == end[1]) {
+            int calcul = Math.abs(start[0] - end[0]);
+            return calcul + 1;
+        }
+        throw new RuntimeException("invalid coordinates");
+    }
+
+    public static boolean isValidShipCoordinates(String startCoordinate, String endCoordinate, Ship ship) {
+        if (!isValidCoordinate(startCoordinate) ||  !isValidCoordinate(endCoordinate)) {
+            return false;
+        }
+        int[] start = parseStringCoordinate(startCoordinate);
+        int[] end = parseStringCoordinate(endCoordinate);
+
+        if (start[0] != end[0] && start[1] != end[1]) {
+            return false;
+        }
+        if(ship.cells != calculateLength(start, end)) {
+            return false;
+        }
+//        System.out.println(calculateLength(start, end));
+        return true;
+
     }
     
 
