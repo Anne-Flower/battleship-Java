@@ -16,17 +16,28 @@ public class Main {
                 new Ship(3, "Cruiser"),
                 new Ship(2, "Destroyer")
         };
+        SeaBoard mySeaBoard = new SeaBoard();
+        mySeaBoard.display();
 
-        for(int i = 0; i < playerOneShips.length; i++) {
-            placeShipPrompt(playerOneShips[i]);
-            String startCoordinate = scanner.next();
-            String endCoordinate = scanner.next();
+        for (Ship ship: playerOneShips ) {
+            ValidationResult result = new ValidationResult(false);
+            while (!result.isValid) {
+                placeShipPrompt(ship);
+                String startCoordinate = scanner.next();
+                String endCoordinate = scanner.next();
+                result = isValidShipCoordinates(startCoordinate, endCoordinate, ship);
+                if (result.isValid) {
+                    mySeaBoard.display();
+                } else {
+                    System.out.println(result.error);
+                }
+            }
         }
 
     }
     
     public static void placeShipPrompt(Ship ship) {
-        System.out.format("Enter the coordinates of the %s (%d cells):\n", ship.name, ship.cells);
+        System.out.format("Enter the coordinates of the %s (%d cells):\n", ship.getNameShip(), ship.getCells());
     }
 
     public static int[] parseStringCoordinate(String stringCoordinate) {
@@ -94,21 +105,22 @@ public class Main {
         throw new RuntimeException("invalid coordinates");
     }
 
-    public static boolean isValidShipCoordinates(String startCoordinate, String endCoordinate, Ship ship) {
+    public static ValidationResult isValidShipCoordinates(String startCoordinate, String endCoordinate, Ship ship) {
         if (!isValidCoordinate(startCoordinate) ||  !isValidCoordinate(endCoordinate)) {
-            return false;
+            return new ValidationResult(false, "Error! Wrong ship location! Try again:");
         }
         int[] start = parseStringCoordinate(startCoordinate);
         int[] end = parseStringCoordinate(endCoordinate);
 
         if (start[0] != end[0] && start[1] != end[1]) {
-            return false;
+            return new ValidationResult(false, "Error! Wrong ship location! Try again:");
         }
-        if(ship.cells != calculateLength(start, end)) {
-            return false;
+        if(ship.getCells() != calculateLength(start, end)) {
+            String errorString = String.format("Error! Wrong length of the %s! Try again:", ship.getNameShip());
+            return new ValidationResult(false, errorString);
         }
 //        System.out.println(calculateLength(start, end));
-        return true;
+        return new ValidationResult(true);
 
     }
     

@@ -9,4 +9,7 @@ public class ValidationResult {
         this.isValid = isValid;
         this.error = error;
     }
+    public ValidationResult(boolean isValid) {
+        this.isValid = isValid;
+    }
 }
