@@ -5,15 +5,15 @@ import java.util.ArrayList;
 public class SeaBoard {
     int cols = 10;
     String[] alphabet = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
-    ArrayList<Ship> ships = new ArrayList<>();
+    ArrayList<ShipInfo> ships = new ArrayList<>();
     public SeaBoard() {
         int cols = 10;
 
     }
 
-    public void placeShip(Ship ship, int[] StartCo, int[] endCo) {
-        ships.add(ship);
-
+    public void placeShip(Ship ship, int[] startCo, int[] endCo) {
+        ShipInfo myShipInfo = new ShipInfo(ship,startCo, endCo );
+        ships.add(myShipInfo);
     }
 
 
