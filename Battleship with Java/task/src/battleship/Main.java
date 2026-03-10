@@ -27,6 +27,7 @@ public class Main {
                 String endCoordinate = scanner.next();
                 result = isValidShipCoordinates(startCoordinate, endCoordinate, ship);
                 if (result.isValid) {
+                    mySeaBoard.placeShip(ship, parseStringCoordinate(startCoordinate), parseStringCoordinate(endCoordinate));
                     mySeaBoard.display();
                 } else {
                     System.out.println(result.error);
@@ -54,7 +55,7 @@ public class Main {
         letterMapping.put("J", 9);
 
         String letter = String.valueOf(stringCoordinate.charAt(0));
-        int number = Integer.parseInt(stringCoordinate.substring(1));
+        int number = Integer.parseInt(stringCoordinate.substring(1)) - 1;
         int letterDico = letterMapping.get(letter);
         int[] coordinate = {letterDico, number};
         return coordinate;

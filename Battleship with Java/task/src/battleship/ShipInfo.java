@@ -1,11 +1,13 @@
 package battleship;
 
+import java.util.Arrays;
+
 public class ShipInfo {
     Ship ship;
     int[][] parts;
 
     private int[][] calculParts(int[] startCoord, int[] endCoord, int length) {
-        int[][] parts = new int[2][length];
+        int[][] parts = new int[length][2];
         int firstStart = startCoord[0];
         int secondStart = startCoord[1];
         int firstEnd = endCoord[0];
