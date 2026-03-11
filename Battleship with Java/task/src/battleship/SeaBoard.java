@@ -10,10 +10,59 @@ public class SeaBoard {
         int cols = 10;
     }
 
-    public void placeShip(Ship ship, int[] startCo, int[] endCo) {
+    public ValidationResult placeShip(Ship ship, int[] startCo, int[] endCo) {
         ShipInfo myShipInfo = new ShipInfo(ship,startCo, endCo );
+        for (int[] part : myShipInfo.parts){
+            if (isAroundShip(part)) {
+                return new ValidationResult(false, "Error! You placed it too close to another one. Try again:");
+            }
+        }
         ships.add(myShipInfo);
+        return new ValidationResult(true);
     }
+
+    private boolean coordEqual(int[] coordA, int[] coordB){
+        if(coordA[0] == coordB[0] && coordA[1] == coordB[1]) {
+            return true;
+        }
+        return false;
+    }
+
+    private int[][] getSurroundingCoordinates(int[] target){
+        int[][] listOfSurroundingCoordinate = new int[4][2];
+        listOfSurroundingCoordinate[0] = new int[]{target[0] + 1, target[1]};
+        listOfSurroundingCoordinate[1] = new int[]{target[0] - 1, target[1]};
+        listOfSurroundingCoordinate[2] = new int[]{target[0], target[1] + 1};
+        listOfSurroundingCoordinate[3] = new int[]{target[0], target[1] -1};
+
+        return listOfSurroundingCoordinate;
+    }
+
+    private boolean isAroundCoordinate(int[] target, int[] baseCoordinate) {
+        int[][] list = getSurroundingCoordinates(target);
+        for (int[] e : list) {
+            if (coordEqual(e, baseCoordinate)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public boolean isAroundShip(int[] coordinate) {
+        for(ShipInfo shipInfo: ships) {
+            for (int[] part : shipInfo.parts) {
+                if(coordEqual(part, coordinate)) {
+                    return true;
+                }
+                if (isAroundCoordinate(part, coordinate)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public boolean isShip(int[] coordinate) {
         for(ShipInfo shipInfo: ships) {
             for (int[] part : shipInfo.parts) {

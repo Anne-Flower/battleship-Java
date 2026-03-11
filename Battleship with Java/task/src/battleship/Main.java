@@ -20,18 +20,33 @@ public class Main {
         mySeaBoard.display();
 
         for (Ship ship: playerOneShips ) {
-            ValidationResult result = new ValidationResult(false);
-            while (!result.isValid) {
+            ValidationResult coordResult = new ValidationResult(false);
+            ValidationResult placeResult = new ValidationResult(false);
+
+            while (!coordResult.isValid || !placeResult.isValid) {
                 placeShipPrompt(ship);
                 String startCoordinate = scanner.next();
                 String endCoordinate = scanner.next();
-                result = isValidShipCoordinates(startCoordinate, endCoordinate, ship);
-                if (result.isValid) {
-                    mySeaBoard.placeShip(ship, parseStringCoordinate(startCoordinate), parseStringCoordinate(endCoordinate));
-                    mySeaBoard.display();
+                coordResult = isValidShipCoordinates(startCoordinate, endCoordinate, ship);
+                if (coordResult.isValid) {
+                    int[] startInt = parseStringCoordinate(startCoordinate);
+                    int[] endInt = parseStringCoordinate(endCoordinate);
+                    if (endInt[0] < startInt[0] || endInt[1] < startInt[1]) {
+                        int[] tempCoord = startInt;
+                        startInt = endInt;
+                        endInt = tempCoord;
+                    }
+                    placeResult = mySeaBoard.placeShip(ship, startInt, endInt);
+                    if (placeResult.isValid) {
+                        mySeaBoard.display();
+                    }
+                    else {
+                        System.out.println(placeResult.error);
+                    }
                 } else {
-                    System.out.println(result.error);
+                    System.out.println(coordResult.error);
                 }
+
             }
         }
 

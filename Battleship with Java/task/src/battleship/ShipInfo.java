@@ -31,6 +31,16 @@ public class ShipInfo {
         return parts;
     }
 
+    private int[][] calculPartsAround(int[][] parts, int length) {
+        int[][] partsAround = new int[length][2];
+        for(int[] part : parts) {
+            if (part[0] >= 0 && part[0] <= 10) {
+
+            }
+        }
+        return partsAround;
+    }
+
     public ShipInfo(Ship ship, int[] startCoord, int[] endCoord) {
         this.ship = ship;
         this.parts = calculParts(startCoord, endCoord, ship.getCells());
