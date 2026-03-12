@@ -1,6 +1,7 @@
 package battleship;
 
 
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.HashMap;
 
@@ -11,15 +12,15 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Ship[] playerOneShips = {
                 new Ship(5, "Aircraft Carrier"),
-                new Ship(4, "Battleship"),
-                new Ship(3, "Submarine"),
-                new Ship(3, "Cruiser"),
-                new Ship(2, "Destroyer")
+//                new Ship(4, "Battleship"),
+//                new Ship(3, "Submarine"),
+//                new Ship(3, "Cruiser"),
+//                new Ship(2, "Destroyer")
         };
         SeaBoard mySeaBoard = new SeaBoard();
         mySeaBoard.display();
 
-        for (Ship ship: playerOneShips ) {
+        for (Ship ship : playerOneShips) {
             ValidationResult coordResult = new ValidationResult(false);
             ValidationResult placeResult = new ValidationResult(false);
 
@@ -39,21 +40,34 @@ public class Main {
                     placeResult = mySeaBoard.placeShip(ship, startInt, endInt);
                     if (placeResult.isValid) {
                         mySeaBoard.display();
-                    }
-                    else {
+                    } else {
                         System.out.println(placeResult.error);
                     }
                 } else {
                     System.out.println(coordResult.error);
                 }
-
             }
         }
-
+        gamePrompt();
+        mySeaBoard.display();
+        System.out.println("Take a shot!");
+        String shot = scanner.next();
+        int[] shotCoord = parseStringCoordinate(shot);
+        if (mySeaBoard.placeMissile(shotCoord)) {
+            mySeaBoard.display();
+            System.out.println("You hit a ship!");
+        } else {
+            mySeaBoard.display();
+            System.out.println("You missed!");
+        }
     }
-    
+
     public static void placeShipPrompt(Ship ship) {
         System.out.format("Enter the coordinates of the %s (%d cells):\n", ship.getNameShip(), ship.getCells());
+    }
+
+    public static void gamePrompt() {
+        System.out.println("The game starts!");
     }
 
     public static int[] parseStringCoordinate(String stringCoordinate) {
@@ -122,7 +136,7 @@ public class Main {
     }
 
     public static ValidationResult isValidShipCoordinates(String startCoordinate, String endCoordinate, Ship ship) {
-        if (!isValidCoordinate(startCoordinate) ||  !isValidCoordinate(endCoordinate)) {
+        if (!isValidCoordinate(startCoordinate) || !isValidCoordinate(endCoordinate)) {
             return new ValidationResult(false, "Error! Wrong ship location! Try again:");
         }
         int[] start = parseStringCoordinate(startCoordinate);
@@ -131,7 +145,7 @@ public class Main {
         if (start[0] != end[0] && start[1] != end[1]) {
             return new ValidationResult(false, "Error! Wrong ship location! Try again:");
         }
-        if(ship.getCells() != calculateLength(start, end)) {
+        if (ship.getCells() != calculateLength(start, end)) {
             String errorString = String.format("Error! Wrong length of the %s! Try again:", ship.getNameShip());
             return new ValidationResult(false, errorString);
         }
@@ -139,6 +153,6 @@ public class Main {
         return new ValidationResult(true);
 
     }
-    
+
 
 }

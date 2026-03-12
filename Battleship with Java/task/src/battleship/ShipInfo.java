@@ -41,6 +41,7 @@ public class ShipInfo {
         return partsAround;
     }
 
+
     public ShipInfo(Ship ship, int[] startCoord, int[] endCoord) {
         this.ship = ship;
         this.parts = calculParts(startCoord, endCoord, ship.getCells());
