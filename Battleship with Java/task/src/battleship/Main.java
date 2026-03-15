@@ -50,16 +50,29 @@ public class Main {
         gamePrompt();
         mySeaBoard.display(true);
         System.out.println("Take a shot!");
-        String shot = scanner.next();
-        int[] shotCoord = parseStringCoordinate(shot);
-        if (mySeaBoard.placeMissile(shotCoord)) {
+
+        SeaBoard.MissileResult myResult = SeaBoard.MissileResult.START;
+        while(SeaBoard.MissileResult.ALL_SHIPS_SUNK != myResult) {
+            String shot = scanner.next();
+            int[] shotCoord = parseStringCoordinate(shot);
+            myResult = mySeaBoard.placeMissile(shotCoord);
             mySeaBoard.display(true);
-            System.out.println("You hit a ship!");
-        } else {
-            mySeaBoard.display(true);
-            System.out.println("You missed!");
+            switch(myResult) {
+                case MISSILE_HIT:
+                    System.out.println("You hit a ship! Try again:");
+                    break;
+                case MISSILE_MISSED:
+                    System.out.println("You missed. Try again:");
+                    break;
+                case SHIP_SUNK:
+                    System.out.println("You sank a ship! Specify a new target:");
+                    break;
+                case ALL_SHIPS_SUNK:
+                    System.out.println("You sank the last ship. You won. Congratulations!");
+                    break;
+            }
+            mySeaBoard.display(false);
         }
-        mySeaBoard.display(false);
 
     }
 

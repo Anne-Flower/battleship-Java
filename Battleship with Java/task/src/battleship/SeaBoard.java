@@ -12,6 +12,10 @@ public class SeaBoard {
         int cols = 10;
     }
 
+    public static enum MissileResult {
+        MISSILE_HIT, SHIP_SUNK, MISSILE_MISSED, ALL_SHIPS_SUNK, START
+    }
+
 
     public ValidationResult placeShip(Ship ship, int[] startCo, int[] endCo) {
         ShipInfo myShipInfo = new ShipInfo(ship, startCo, endCo);
@@ -26,14 +30,6 @@ public class SeaBoard {
 
     private boolean coordEqual(int[] coordA, int[] coordB) {
         if (coordA[0] == coordB[0] && coordA[1] == coordB[1]) {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean placeMissile(int[] coord) {
-        missiles.add(coord);
-        if (isShip(coord)) {
             return true;
         }
         return false;
@@ -58,7 +54,6 @@ public class SeaBoard {
         }
         return false;
     }
-
 
     public boolean isAroundShip(int[] coordinate) {
         for (ShipInfo shipInfo : ships) {
@@ -92,6 +87,14 @@ public class SeaBoard {
             }
         }
         return false;
+    }
+
+    public MissileResult placeMissile(int[] coord) {
+        missiles.add(coord);
+        if (isShip(coord)) {
+            return MissileResult.ALL_SHIPS_SUNK; // MISSILE_HIT : detect when all ships and one ship are sunk
+        }
+        return MissileResult.MISSILE_MISSED;
     }
 
     public void display(boolean isFogWar) {
