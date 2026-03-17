@@ -8,56 +8,33 @@ import java.util.HashMap;
 public class Main {
 
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
-        Ship[] playerOneShips = {
+        Ship[] shipsToPlace = {
                 new Ship(5, "Aircraft Carrier"),
                 new Ship(4, "Battleship"),
                 new Ship(3, "Submarine"),
                 new Ship(3, "Cruiser"),
                 new Ship(2, "Destroyer")
         };
+        System.out.println("Player 1, place your ships on the game field");
+        System.out.println();
         SeaBoard mySeaBoard = new SeaBoard();
         mySeaBoard.display(false);
 
-        for (Ship ship : playerOneShips) {
-            ValidationResult coordResult = new ValidationResult(false);
-            ValidationResult placeResult = new ValidationResult(false);
 
-            while (!coordResult.isValid || !placeResult.isValid) {
-                placeShipPrompt(ship);
-                String startCoordinate = scanner.next();
-                String endCoordinate = scanner.next();
-                coordResult = isValidShipCoordinates(startCoordinate, endCoordinate, ship);
-                if (coordResult.isValid) {
-                    int[] startInt = parseStringCoordinate(startCoordinate);
-                    int[] endInt = parseStringCoordinate(endCoordinate);
-                    if (endInt[0] < startInt[0] || endInt[1] < startInt[1]) {
-                        int[] tempCoord = startInt;
-                        startInt = endInt;
-                        endInt = tempCoord;
-                    }
-                    placeResult = mySeaBoard.placeShip(ship, startInt, endInt);
-                    if (placeResult.isValid) {
-                        mySeaBoard.display(false);
-                    } else {
-                        System.out.println(placeResult.error);
-                    }
-                } else {
-                    System.out.println(coordResult.error);
-                }
-            }
-        }
+
         gamePrompt();
         mySeaBoard.display(true);
         System.out.println("Take a shot!");
 
         SeaBoard.MissileResult myResult = SeaBoard.MissileResult.START;
-        while(SeaBoard.MissileResult.ALL_SHIPS_SUNK != myResult) {
+        while (SeaBoard.MissileResult.ALL_SHIPS_SUNK != myResult) {
             String shot = scanner.next();
             int[] shotCoord = parseStringCoordinate(shot);
             myResult = mySeaBoard.placeMissile(shotCoord);
             mySeaBoard.display(true);
-            switch(myResult) {
+            switch (myResult) {
                 case MISSILE_HIT:
                     System.out.println("You hit a ship! Try again:");
                     break;
@@ -76,9 +53,6 @@ public class Main {
 
     }
 
-    public static void placeShipPrompt(Ship ship) {
-        System.out.format("Enter the coordinates of the %s (%d cells):\n", ship.getNameShip(), ship.getCells());
-    }
 
     public static void gamePrompt() {
         System.out.println("The game starts!");
@@ -149,24 +123,7 @@ public class Main {
         throw new RuntimeException("invalid coordinates");
     }
 
-    public static ValidationResult isValidShipCoordinates(String startCoordinate, String endCoordinate, Ship ship) {
-        if (!isValidCoordinate(startCoordinate) || !isValidCoordinate(endCoordinate)) {
-            return new ValidationResult(false, "Error! Wrong ship location! Try again:");
-        }
-        int[] start = parseStringCoordinate(startCoordinate);
-        int[] end = parseStringCoordinate(endCoordinate);
 
-        if (start[0] != end[0] && start[1] != end[1]) {
-            return new ValidationResult(false, "Error! Wrong ship location! Try again:");
-        }
-        if (ship.getCells() != calculateLength(start, end)) {
-            String errorString = String.format("Error! Wrong length of the %s! Try again:", ship.getNameShip());
-            return new ValidationResult(false, errorString);
-        }
-//        System.out.println(calculateLength(start, end));
-        return new ValidationResult(true);
-
-    }
 
 
 }
