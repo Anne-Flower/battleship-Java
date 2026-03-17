@@ -139,6 +139,13 @@ public class SeaBoard {
         return MissileResult.MISSILE_MISSED;
     }
 
+
+    public void displayGame() {
+        this.display(true);
+        System.out.println("---------------------");
+        this.display(false);
+    }
+
     public void display(boolean isFogWar) {
         System.out.print("  ");
         for (int i = 0; i < cols; i++) {

@@ -35,10 +35,16 @@ public class Player {
         }
 //        System.out.println(calculateLength(start, end));
         return new ValidationResult(true);
+    }
 
+    public void yourTurn(){
+        System.out.format("%s, it's your turn:", this.name);
     }
 
     public void placeShips(Ship[] shipsToPlace) {
+        System.out.format("%s, place your ships on the game field", this.name);
+        System.out.println();
+        this.seaBoard.display(false);
         Scanner scanner = new Scanner(System.in);
         for (Ship ship : shipsToPlace) {
             ValidationResult coordResult = new ValidationResult(false);
