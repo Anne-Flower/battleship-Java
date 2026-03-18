@@ -29,6 +29,18 @@ public class Main {
         playerOne.seaBoard.displayGame();
         playerOne.yourTurn();
 
+        Player activePlayer = playerOne;
+
+        while(true) {
+            System.out.println(activePlayer.name);
+            if (activePlayer == playerOne) {
+                activePlayer = playerTwo;
+            }
+            else {
+                activePlayer = playerOne;
+            }
+        }
+
 //        SeaBoard.MissileResult myResult = SeaBoard.MissileResult.START;
 //        while (SeaBoard.MissileResult.ALL_SHIPS_SUNK != myResult) {
 //            String shot = scanner.next();
