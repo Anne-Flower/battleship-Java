@@ -12,10 +12,10 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Ship[] shipsToPlace = {
                 new Ship(5, "Aircraft Carrier"),
-//                new Ship(4, "Battleship"),
-//                new Ship(3, "Submarine"),
-//                new Ship(3, "Cruiser"),
-//                new Ship(2, "Destroyer")
+                new Ship(4, "Battleship"),
+                new Ship(3, "Submarine"),
+                new Ship(3, "Cruiser"),
+                new Ship(2, "Destroyer")
         };
 
         //place all ships for both players
@@ -30,11 +30,14 @@ public class Main {
         //war game with bullets start
         Player activePlayer = playerOne;
         Player otherPlayer = playerTwo;
-        while(true) {
+        SeaBoard.MissileResult myResult = SeaBoard.MissileResult.START;
+        while(SeaBoard.MissileResult.ALL_SHIPS_SUNK != myResult) {
             displayGame(activePlayer, otherPlayer);
             activePlayer.yourTurn();
-            activePlayer.placeMissile(otherPlayer.seaBoard);
-            displayHitOrMissedMessage(activePlayer.placeMissile(otherPlayer.seaBoard));
+            SeaBoard.MissileResult result = activePlayer.placeMissile(otherPlayer.seaBoard);
+            displayHitOrMissedMessage(result);
+            waitForEnterKey();
+            myResult = result;
 
             if (activePlayer == playerOne) {
                 otherPlayer = playerOne;
@@ -44,42 +47,22 @@ public class Main {
                 activePlayer = playerOne;
                 otherPlayer = playerTwo;
             }
-
         }
 
-
-
-//        SeaBoard.MissileResult myResult = SeaBoard.MissileResult.START;
-//        while (SeaBoard.MissileResult.ALL_SHIPS_SUNK != myResult) {
-//            String shot = scanner.next();
-//            int[] shotCoord = parseStringCoordinate(shot);
-//            myResult = mySeaBoard.placeMissile(shotCoord);
-//            mySeaBoard.display(true);
-//            switch (myResult) {
-//                case MISSILE_HIT:
-//                    System.out.println("You hit a ship! Try again:");
-//                    break;
-//                case MISSILE_MISSED:
-//                    System.out.println("You missed. Try again:");
-//                    break;
-//                case SHIP_SUNK:
-//                    System.out.println("You sank a ship! Specify a new target:");
-//                    break;
-//                case ALL_SHIPS_SUNK:
-//                    System.out.println("You sank the last ship. You won. Congratulations!");
-//                    break;
-//            }
-//            mySeaBoard.display(false);
-//        }
     }
-
 
     public static void displayHitOrMissedMessage(SeaBoard.MissileResult myMissileResult){
         if (SeaBoard.MissileResult.MISSILE_HIT == myMissileResult) {
-            System.out.println("You hit");
+            System.out.println("You hit a ship!");
         }
-        else {
-            System.out.println("You missed");
+        else if (SeaBoard.MissileResult.MISSILE_MISSED == myMissileResult) {
+            System.out.println("You missed!");
+        }
+        else if (SeaBoard.MissileResult.SHIP_SUNK == myMissileResult) {
+            System.out.println("You sank a ship! Specify a new target:");
+        }
+        else if (SeaBoard.MissileResult.ALL_SHIPS_SUNK == myMissileResult) {
+            System.out.println("You sank the last ship. You won. Congratulations!");
         }
     }
 
@@ -168,6 +151,30 @@ public class Main {
         throw new RuntimeException("invalid coordinates");
     }
 
+
+
+//        SeaBoard.MissileResult myResult = SeaBoard.MissileResult.START;
+//        while (SeaBoard.MissileResult.ALL_SHIPS_SUNK != myResult) {
+//            String shot = scanner.next();
+//            int[] shotCoord = parseStringCoordinate(shot);
+//            myResult = mySeaBoard.placeMissile(shotCoord);
+//            mySeaBoard.display(true);
+//            switch (myResult) {
+//                case MISSILE_HIT:
+//                    System.out.println("You hit a ship! Try again:");
+//                    break;
+//                case MISSILE_MISSED:
+//                    System.out.println("You missed. Try again:");
+//                    break;
+//                case SHIP_SUNK:
+//                    System.out.println("You sank a ship! Specify a new target:");
+//                    break;
+//                case ALL_SHIPS_SUNK:
+//                    System.out.println("You sank the last ship. You won. Congratulations!");
+//                    break;
+//            }
+//            mySeaBoard.display(false);
+//        }
 
 
 

@@ -14,38 +14,12 @@ public class Player {
     }
 
     public SeaBoard.MissileResult placeMissile(SeaBoard targetBoard) {
-        //todo : placer un missile d un joueur, sur le board de l'autre joueur
-
-        SeaBoard.MissileResult myResult= SeaBoard.MissileResult.START;
+        SeaBoard.MissileResult myResult = SeaBoard.MissileResult.START;
         Scanner scanner = new Scanner(System.in);
         String shot = scanner.next();
         int[] shotCoord = parseStringCoordinate(shot);
         myResult = targetBoard.placeMissile(shotCoord);
         return myResult;
-
-
-//        SeaBoard.MissileResult myResult1 = SeaBoard.MissileResult.START;
-//       while (SeaBoard.MissileResult.ALL_SHIPS_SUNK != myResult1) {
-//           Scanner scanner = new Scanner(System.in);
-//           String shot = scanner.next();
-//           int[] shotCoord = parseStringCoordinate(shot);
-//           myResult = player1.seaBoard.placeMissile(shotCoord);
-//           targetBoard.display(true);
-//           switch (myResult) {
-//               case MISSILE_HIT:
-//                   System.out.println("You hit a ship! Try again:");
-//                   break;
-//               case MISSILE_MISSED:
-//                   System.out.println("You missed. Try again:");
-//                   break;
-//               case SHIP_SUNK:
-//                   System.out.println("You sank a ship! Specify a new target:");
-//                   break;
-//               case ALL_SHIPS_SUNK:
-//                   System.out.println("You sank the last ship. You won. Congratulations!");
-//                   break;
-//           }
-//       }
     }
 
 //    public static void displayGamePlayers(Player player1, Player player2) {
