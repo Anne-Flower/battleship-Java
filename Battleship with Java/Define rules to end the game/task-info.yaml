@@ -4,10 +4,4 @@ files:
     visible: true
   - name: test/Tests.java
     visible: false
-  - name: src/battleship/ShipInfo.java
-    visible: true
-  - name: src/battleship/ValidationResult.java
-    visible: true
-  - name: src/battleship/Player.java
-    visible: true
 feedback_link: https://hyperskill.org/projects/383/stages/2285/implement#comment

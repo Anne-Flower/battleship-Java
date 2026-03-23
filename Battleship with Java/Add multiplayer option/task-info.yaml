@@ -2,6 +2,10 @@ type: edu
 files:
   - name: src/battleship/Main.java
     visible: true
+  - name: src/battleship/ShipInfo.java
+    visible: true
+  - name: src/battleship/ValidationResult.java
+    visible: true
   - name: test/Tests.java
     visible: false
 feedback_link: https://hyperskill.org/projects/383/stages/2286/implement#comment

@@ -18,28 +18,36 @@ public class Main {
 //                new Ship(2, "Destroyer")
         };
 
+        //place all ships for both players
         Player playerOne = new Player("Player 1");
         Player playerTwo = new Player("Player 2");
         playerOne.placeShips(shipsToPlace);
 
         waitForEnterKey();
         playerTwo.placeShips(shipsToPlace);
-
         waitForEnterKey();
-        playerOne.seaBoard.displayGame();
-        playerOne.yourTurn();
 
+        //war game with bullets start
         Player activePlayer = playerOne;
-
+        Player otherPlayer = playerTwo;
         while(true) {
-            System.out.println(activePlayer.name);
+            displayGame(activePlayer, otherPlayer);
+            activePlayer.yourTurn();
+            activePlayer.placeMissile(otherPlayer.seaBoard);
+            displayHitOrMissedMessage(activePlayer.placeMissile(otherPlayer.seaBoard));
+
             if (activePlayer == playerOne) {
+                otherPlayer = playerOne;
                 activePlayer = playerTwo;
             }
             else {
                 activePlayer = playerOne;
+                otherPlayer = playerTwo;
             }
+
         }
+
+
 
 //        SeaBoard.MissileResult myResult = SeaBoard.MissileResult.START;
 //        while (SeaBoard.MissileResult.ALL_SHIPS_SUNK != myResult) {
@@ -63,9 +71,23 @@ public class Main {
 //            }
 //            mySeaBoard.display(false);
 //        }
-
     }
 
+
+    public static void displayHitOrMissedMessage(SeaBoard.MissileResult myMissileResult){
+        if (SeaBoard.MissileResult.MISSILE_HIT == myMissileResult) {
+            System.out.println("You hit");
+        }
+        else {
+            System.out.println("You missed");
+        }
+    }
+
+    public static void displayGame(Player active, Player other) {
+        other.seaBoard.display(true);
+        System.out.println("---------------------");
+        active.seaBoard.display(false);
+    }
 
     public static void enterPrompt() {
         System.out.format("Press Enter and pass the move to another player\n");
